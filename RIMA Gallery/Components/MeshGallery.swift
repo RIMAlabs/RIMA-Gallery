@@ -12,14 +12,13 @@ struct MeshGallery: View {
     @Binding var columns: Int
     @Binding var areFilled: Bool
     @Binding var imageSelected: String?
+    var namespace: Namespace.ID // Espacio de nombres para animación
+
     var body: some View {
-        // Configuración de columnas según el número dinámico
-        let columns = Array(repeating: GridItem(.flexible(), spacing: 2), count: columns)
-        LazyVGrid(columns: columns, spacing: 2) {
+        let gridItems = Array(repeating: GridItem(.flexible(), spacing: 2), count: columns)
+        LazyVGrid(columns: gridItems, spacing: 2) {
             ForEach(items, id: \.self) { item in
-                ZStack {
-                    ImagePreview(image: item, filled: $areFilled, imageSelected: $imageSelected)
-                }
+                ImagePreview(image: item, filled: $areFilled, imageSelected: $imageSelected, namespace: namespace)
             }
         }
     }
@@ -29,5 +28,6 @@ struct MeshGallery: View {
     @Previewable @State var columns: Int = 3
     @Previewable @State var areFilled: Bool = true
     @Previewable @State var imageSelected: String? = nil
-    MeshGallery(columns: $columns, areFilled: $areFilled, imageSelected: $imageSelected)
+    @Previewable @Namespace var namespace
+    MeshGallery(columns: $columns, areFilled: $areFilled, imageSelected: $imageSelected, namespace: namespace)
 }
