@@ -19,20 +19,10 @@ struct ImageView: View {
     var body: some View {
         if let image = image {
             ZStack {
-                // Fondo adaptable con desenfoque
-                Color(.black)
-                    .edgesIgnoringSafeArea(.all)
-                    .opacity(0.9)
-                    .blur(radius: 0)
-                    .onTapGesture {
-                        withAnimation {
-                            self.image = nil
-                        }
-                    }
-
+                Color(.black).ignoresSafeArea()
                 Image(image)
                     .resizable()
-                    .aspectRatio(contentMode: .fit)
+                    .aspectRatio(contentMode: .fit) // Modificación aquí
                     .matchedGeometryEffect(id: image, in: namespace)
                     .scaleEffect(scale)
                     .offset(offset)
@@ -75,7 +65,6 @@ struct ImageView: View {
                             MagnificationGesture()
                                 .onChanged { value in
                                     scale = lastScale * value
-                                    scale = max(1.0, min(scale, 5.0))
                                 }
                                 .onEnded { _ in
                                     withAnimation {
@@ -106,7 +95,6 @@ struct ImageView: View {
         }
     }
 }
-
 
 #Preview {
     @Previewable @State var image: String? = "Image1"
